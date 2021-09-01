@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { Lista } from 'src/app/models/lista.model';
 import { DeseosService } from 'src/app/services/deseos.service';
 
@@ -13,14 +14,55 @@ export class Tab1Page {
   listas: Lista[] = [];
 
 
-  constructor(public deseosService:DeseosService, private router:Router) {
+  constructor(public deseosService: DeseosService,
+    private router: Router,
+    private alertController: AlertController) {
 
-    this.listas= deseosService.listas;
-console.log('this.listas ' + this.listas);
+    this.listas = deseosService.listas;
+    console.log('this.listas ' + this.listas);
   }
 
-  agregarLista(){
-    this.router.navigateByUrl('/tabs/tab1/agregar');
+  async agregarLista() {
+
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Nueva lista',
+      inputs: [
+        {
+          name: 'titulo',
+          type: 'text',
+          placeholder: 'Nombre de la Lista'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelar');
+          }
+        },
+        {
+          text: 'Crear',
+          handler: (data) => {
+
+            if (data.length === 0) {
+              return;
+             }
+              const listId =  this.deseosService.crearlista(data.titulo);
+       
+              this.router.navigateByUrl('/tabs/tab1/agregar/${listId}');
+              //Metodo para crear la lista
+          }
+        }
+      ]
+    });
+
+    alert.present();
+
+
+
+    // this.router.navigateByUrl('/tabs/tab1/agregar');
   }
 
 }
