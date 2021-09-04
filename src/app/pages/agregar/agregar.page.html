@@ -4,37 +4,43 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/" color="tertiary"></ion-back-button>
     </ion-buttons>
-    <ion-title>agregar</ion-title>
+    <ion-title>{{list.titulo}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content color="dark">
-<ion-list color="dark">
-  <ion-item color="dark">
-    <ion-label  position="floating">Nuevo item</ion-label>
-    <ion-input  [(ngModel)]="nombreItem" 
-    (keyup.enter)="agregarItem()")
-    type="text"></ion-input>
-  </ion-item>
-</ion-list>
+  <ion-list color="dark">
+    <ion-item color="dark">
+      <ion-label position="floating">Nuevo item</ion-label>
+      <ion-input [(ngModel)]="nombreItem" (keyup.enter)="agregarItem()" type="text"></ion-input>
+    </ion-item>
+  </ion-list>
 
-<ion-list>
+  <ion-list>
 
-  <ion-list-header color="dark">
-    <label >Tareas por hacer</label>
-  </ion-list-header>
+    <ion-list-header color="dark" *ngIf="list.items.length > 0">
+      <label>Tareas por hacer</label>
+    </ion-list-header>
 
-  <ion-item color="dark"
-  *ngFor="let item of lista.items">
-      <ion-checkbox slot="start"
-       checked="isChecked"
-        color="tertiary"
-        [(ngModel)]="item.completado"></ion-checkbox>
-      
+
+    <ion-item-sliding  *ngFor="let item of list.items; let i=index" 
+    class="animated fadeInDown">
+      <ion-item color="dark">
+        <ion-checkbox slot="start" checked="isChecked" color="tertiary" (ionChange)="cambioCheck(item)"
+          [(ngModel)]="item.completado"></ion-checkbox>
+
         <ion-label>{{item.desc}}</ion-label>
-      
-  </ion-item>
+      </ion-item>
 
-</ion-list>
+      <ion-item-options side="end">
+        <ion-item-option (click)="borrar(i)" color="danger">Unread
+          <ion-icon slot="icon-only" name="close"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+
+    </ion-item-sliding>
+
+  </ion-list>
 
 </ion-content>

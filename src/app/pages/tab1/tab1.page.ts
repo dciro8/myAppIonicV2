@@ -48,21 +48,22 @@ export class Tab1Page {
 
             if (data.length === 0) {
               return;
-             }
-              const listId =  this.deseosService.crearlista(data.titulo);
-       
-              this.router.navigateByUrl('/tabs/tab1/agregar/${listId}');
-              //Metodo para crear la lista
+            }
+            const listaId = this.deseosService.crearlista(data.titulo);
+            console.log('data.titulo' + data.titulo);
+            this.router.navigateByUrl(`/tabs/tab1/agregar/${listaId}`);
+            //Metodo para crear la lista
           }
         }
       ]
     });
 
     alert.present();
+  }
 
+  listaSeleccionada(lista: Lista) {
 
-
-    // this.router.navigateByUrl('/tabs/tab1/agregar');
+    this.router.navigateByUrl(`/tabs/tab1/agregar/${lista.id}`);
   }
 
 }
